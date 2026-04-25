@@ -1,0 +1,25 @@
+# 不用备份的内容
+.git/
+*.lock
+audio_cache/
+image_cache/
+cache/
+hermes-agent/          # Hermes 源码太大了（1.3G），不备份
+sandboxes/
+bin/
+hooks/
+logs/
+gateway.pid
+gateway_state.json
+.hermes_history
+channel_directory.json
+pairing/
+
+# 大缓存文件不备份
+models_dev_cache.json
+
+# 临时文件
+*.tmp
+*.swp
+*.swo
+.DS_Store

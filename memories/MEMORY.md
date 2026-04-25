@@ -1,0 +1,1 @@
+当前配置的模型是 deepseek-v4-flash，通过 DeepSeek API 调用。用户 HanXianBiao 给配的这个模型。
