@@ -102,12 +102,12 @@ auxiliary:
     provider: auto
     timeout: 30
   vision:
-    api_key: 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
-    base_url: ''
+    api_key: 061c7342baa24b64a91735913b4af793.VnHqk7wDXF7NCfeB
+    base_url: https://open.bigmodel.cn/api/paas/v4
     download_timeout: 30
     extra_body: {}
-    model: openai/gpt-4o-mini
-    provider: openrouter
+    model: glm-4v-flash
+    provider: custom
     timeout: 120
   web_extract:
     api_key: ''
