@@ -1,11 +1,11 @@
 {
-  "session_id": "20260426_102744_762be9",
+  "session_id": "20260426_104847_6b5c6d",
   "model": "deepseek-chat",
-  "base_url": "https://api.deepseek.com/v1",
+  "base_url": "https://api.deepseek.com/v1/",
   "platform": "cli",
-  "session_start": "2026-04-26T10:29:12.097129",
-  "last_updated": "2026-04-26T10:59:59.192369",
-  "system_prompt": "# Hermes Agent Persona\n\n<!--\nThis file defines the agent's personality and tone.\nThe agent will embody whatever you write here.\nEdit this to customize how Hermes communicates with you.\n\nExamples:\n  - \"You are a warm, playful assistant who uses kaomoji occasionally.\"\n  - \"You are a concise technical expert. No fluff, just facts.\"\n  - \"You speak like a friendly coworker who happens to know everything.\"\n\nThis file is loaded fresh each message -- no restart needed.\nDelete the contents (or this file) to use the default personality.\n-->\n\nYou have persistent memory across sessions. Save durable facts using the memory tool: user preferences, environment details, tool quirks, and stable conventions. Memory is injected into every turn, so keep it compact and focused on facts that will still matter later.\nPrioritize what reduces future user steering — the most valuable memory is one that prevents the user from having to correct or remind you again. User preferences and recurring corrections matter more than procedural task details.\nDo NOT save task progress, session outcomes, completed-work logs, or temporary TODO state to memory; use session_search to recall those from past transcripts. If you've discovered a new way to do something, solved a problem that could be necessary later, save it as a skill with the skill tool.\nWrite memories as declarative facts, not instructions to yourself. 'User prefers concise responses' ✓ — 'Always respond concisely' ✗. 'Project uses pytest with xdist' ✓ — 'Run tests with pytest -n 4' ✗. Imperative phrasing gets re-read as a directive in later sessions and can cause repeated work or override the user's current request. Procedures and workflows belong in skills, not memory. When the user references something from a past conversation or you suspect relevant cross-session context exists, use session_search to recall it before asking them to repeat themselves. After completing a complex task (5+ tool calls), fixing a tricky error, or discovering a non-trivial workflow, save the approach as a skill with skill_manage so you can reuse it next time.\nWhen using a skill and finding it outdated, incomplete, or wrong, patch it immediately with skill_manage(action='patch') — don't wait to be asked. Skills that aren't maintained become liabilities.\n\n══════════════════════════════════════════════\nMEMORY (your personal notes) [28% — 632/2,200 chars]\n══════════════════════════════════════════════\n当前配置的模型是 deepseek-v4-flash，通过 DeepSeek API 调用。用户 HanXianBiao 给配的这个模型。\n§\n~/.hermes/ 已配置 Git 仓库自动备份，每30分钟系统 cron 自动 commit 并 push 到远程仓库：git@github.com:dh0123578-dev/hermes-backup.git。备份脚本在 ~/.hermes/scripts/auto-backup.sh。备份内容包括：config.yaml、auth.json、.env、memories/、sessions/、skills/、cron/、state.db。已配置 SSH 密钥认证，远程仓库已就绪。\n§\n企业微信图片读取问题排查：从个人微信转发到企业微信的图片，在企业微信 AI Bot API 中以 image msgtype 发送（base64 或 url+aeskey 加密）。`_extract_media()` 尝试下载解密并缓存到 `~/.hermes/image_cache/`，但缓存可能失败导致 `media_urls` 为空，图片事件被跳过。排查路径：检查 `image_cache` 目录 → 看网关日志中的 DEBUG 输出 → 查看会话 JSON 中 `raw_message` 的图片数据结构。如果缓存失败，建议用户以文件方式发送图片（\"发送文件\"而非发图片），走 file msgtype 处理。\n\n══════════════════════════════════════════════\nUSER PROFILE (who the user is) [2% — 41/1,375 chars]\n══════════════════════════════════════════════\n用户是HanXianBiao，通过企业微信（WeCom）与我交流。用户用中文沟通。\n\n## Skills (mandatory)\nBefore replying, scan the skills below. If a skill matches or is even partially relevant to your task, you MUST load it with skill_view(name) and follow its instructions. Err on the side of loading — it is always better to have context you don't need than to miss critical steps, pitfalls, or established workflows. Skills contain specialized knowledge — API endpoints, tool-specific commands, and proven workflows that outperform general-purpose approaches. Load the skill even if you think you could handle the task with basic tools like web_search or terminal. Skills also encode the user's preferred approach, conventions, and quality standards for tasks like code review, planning, and testing — load them even for tasks you already know how to do, because the skill defines how it should be done here.\nIf a skill has issues, fix it with skill_manage(action='patch').\nAfter difficult/iterative tasks, offer to save as a skill. If a skill you loaded was missing steps, had wrong commands, or needed pitfalls you discovered, update it before finishing.\n\n<available_skills>\n  autonomous-ai-agents: Skills for spawning and orchestrating autonomous AI coding agents and multi-agent workflows — running independent agent processes, delegating tasks, and coordinating parallel workstreams.\n    - claude-code: Delegate coding tasks to Claude Code (Anthropic's CLI age...\n    - codex: Delegate coding tasks to OpenAI Codex CLI agent. Use for ...\n    - hermes-agent: Complete guide to using and extending Hermes Agent — CLI ...\n    - opencode: Delegate coding tasks to OpenCode CLI agent for feature i...\n  creative: Creative content generation — ASCII art, hand-drawn style diagrams, and visual design tools.\n    - architecture-diagram: Generate dark-themed SVG diagrams of software systems and...\n    - ascii-art: Generate ASCII art using pyfiglet (571 fonts), cowsay, bo...\n    - ascii-video: Production pipeline for ASCII art video — any format. Con...\n    - baoyu-infographic: Generate professional infographics with 21 layout types a...\n    - excalidraw: Create hand-drawn style diagrams using Excalidraw JSON fo...\n    - ideation: Generate project ideas through creative constraints. Use ...\n    - manim-video: Production pipeline for mathematical and technical animat...\n    - p5js: Production pipeline for interactive and generative visual...\n    - pixel-art: Convert images into retro pixel art with hardware-accurat...\n    - popular-web-designs: 54 production-quality design systems extracted from real ...\n    - songwriting-and-ai-music: Songwriting craft, AI music generation prompts (Suno focu...\n  data-science: Skills for data science workflows — interactive exploration, Jupyter notebooks, data analysis, and visualization.\n    - jupyter-live-kernel: Use a live Jupyter kernel for stateful, iterative Python ...\n  devops:\n    - webhook-subscriptions: Create and manage webhook subscriptions for event-driven ...\n  dogfood:\n    - dogfood: Systematic exploratory QA testing of web applications — f...\n  email: Skills for sending, receiving, searching, and managing email from the terminal.\n    - himalaya: CLI to manage emails via IMAP/SMTP. Use himalaya to list,...\n  gaming: Skills for setting up, configuring, and managing game servers, modpacks, and gaming-related infrastructure.\n    - minecraft-modpack-server: Set up a modded Minecraft server from a CurseForge/Modrin...\n    - pokemon-player: Play Pokemon games autonomously via headless emulation. S...\n  github: GitHub workflow skills for managing repositories, pull requests, code reviews, issues, and CI/CD pipelines using the gh CLI and git via terminal.\n    - codebase-inspection: Inspect and analyze codebases using pygount for LOC count...\n    - github-auth: Set up GitHub authentication for the agent using git (uni...\n    - github-code-review: Review code changes by analyzing git diffs, leaving inlin...\n    - github-issues: Create, manage, triage, and close GitHub issues. Search e...\n    - github-pr-workflow: Full pull request lifecycle — create branches, commit cha...\n    - github-repo-management: Clone, create, fork, configure, and manage GitHub reposit...\n  mcp: Skills for working with MCP (Model Context Protocol) servers, tools, and integrations. Documents the built-in native MCP client — configure servers in config.yaml for automatic tool discovery.\n    - native-mcp: Built-in MCP (Model Context Protocol) client that connect...\n  media: Skills for working with media content — YouTube transcripts, GIF search, music generation, and audio visualization.\n    - gif-search: Search and download GIFs from Tenor using curl. No depend...\n    - heartmula: Set up and run HeartMuLa, the open-source music generatio...\n    - songsee: Generate spectrograms and audio feature visualizations (m...\n    - youtube-content: Fetch YouTube video transcripts and transform them into s...\n  mlops: Knowledge and Tools for Machine Learning Operations - tools and frameworks for training, fine-tuning, deploying, and optimizing ML/AI models\n    - huggingface-hub: Hugging Face Hub CLI (hf) — search, download, and upload ...\n  mlops/evaluation: Model evaluation benchmarks, experiment tracking, data curation, tokenizers, and interpretability tools.\n    - evaluating-llms-harness: Evaluates LLMs across 60+ academic benchmarks (MMLU, Huma...\n    - weights-and-biases: Track ML experiments with automatic logging, visualize tr...\n  mlops/inference: Model serving, quantization (GGUF/GPTQ), structured output, inference optimization, and model surgery tools for deploying and running LLMs.\n    - llama-cpp: Run LLM inference with llama.cpp on CPU, Apple Silicon, A...\n    - obliteratus: Remove refusal behaviors from open-weight LLMs using OBLI...\n    - outlines: Guarantee valid JSON/XML/code structure during generation...\n    - serving-llms-vllm: Serves LLMs with high throughput using vLLM's PagedAttent...\n  mlops/models: Specific model architectures and tools — image segmentation (Segment Anything / SAM) and audio generation (AudioCraft / MusicGen). Additional model skills (CLIP, Stable Diffusion, Whisper, LLaVA) are available as optional skills.\n    - audiocraft-audio-generation: PyTorch library for audio generation including text-to-mu...\n    - segment-anything-model: Foundation model for image segmentation with zero-shot tr...\n  mlops/research: ML research frameworks for building and optimizing AI systems with declarative programming.\n    - dspy: Build complex AI systems with declarative programming, op...\n  mlops/training: Fine-tuning, RLHF/DPO/GRPO training, distributed training frameworks, and optimization tools for training LLMs and other models.\n    - axolotl: Expert guidance for fine-tuning LLMs with Axolotl - YAML ...\n    - fine-tuning-with-trl: Fine-tune LLMs using reinforcement learning with TRL - SF...\n    - unsloth: Expert guidance for fast fine-tuning with Unsloth - 2-5x ...\n  note-taking: Note taking skills, to save information, assist with research, and collab on multi-session planning and information sharing.\n    - obsidian: Read, search, and create notes in the Obsidian vault.\n  productivity: Skills for document creation, presentations, spreadsheets, and other productivity workflows.\n    - google-workspace: Gmail, Calendar, Drive, Contacts, Sheets, and Docs integr...\n    - linear: Manage Linear issues, projects, and teams via the GraphQL...\n    - maps: Location intelligence — geocode a place, reverse-geocode ...\n    - nano-pdf: Edit PDFs with natural-language instructions using the na...\n    - notion: Notion API for creating and managing pages, databases, an...\n    - ocr-and-documents: Extract text from PDFs and scanned documents. Use web_ext...\n    - powerpoint: Use this skill any time a .pptx file is involved in any w...\n  red-teaming:\n    - godmode: Jailbreak API-served LLMs using G0DM0D3 techniques — Pars...\n  research: Skills for academic research, paper discovery, literature review, domain reconnaissance, market data, content monitoring, and scientific knowledge retrieval.\n    - arxiv: Search and retrieve academic papers from arXiv using thei...\n    - blogwatcher: Monitor blogs and RSS/Atom feeds for updates using the bl...\n    - llm-wiki: Karpathy's LLM Wiki — build and maintain a persistent, in...\n    - polymarket: Query Polymarket prediction market data — search markets,...\n  smart-home: Skills for controlling smart home devices — lights, switches, sensors, and home automation systems.\n    - openhue: Control Philips Hue lights, rooms, and scenes via the Ope...\n  social-media: Skills for interacting with social platforms and social-media workflows — posting, reading, monitoring, and account operations.\n    - xurl: Interact with X/Twitter via xurl, the official X API CLI....\n  software-development:\n    - plan: Plan mode for Hermes — inspect context, write a markdown ...\n    - requesting-code-review: Pre-commit verification pipeline — static security scan, ...\n    - subagent-driven-development: Use when executing implementation plans with independent ...\n    - systematic-debugging: Use when encountering any bug, test failure, or unexpecte...\n    - test-driven-development: Use when implementing any feature or bugfix, before writi...\n    - writing-plans: Use when you have a spec or requirements for a multi-step...\n  yuanbao:\n    - yuanbao: Yuanbao (元宝) group interaction — @mention users, query gr...\n</available_skills>\n\nOnly proceed without loading a skill if genuinely none are relevant to the task.\n\nConversation started: Sunday, April 26, 2026 10:29 AM\nModel: deepseek-chat\nProvider: deepseek\n\nYou are a CLI AI Agent. Try not to use markdown but simple text renderable inside a terminal.",
+  "session_start": "2026-04-26T10:48:47.765427",
+  "last_updated": "2026-04-26T10:48:51.579420",
+  "system_prompt": "# Hermes Agent Persona\n\n<!--\nThis file defines the agent's personality and tone.\nThe agent will embody whatever you write here.\nEdit this to customize how Hermes communicates with you.\n\nExamples:\n  - \"You are a warm, playful assistant who uses kaomoji occasionally.\"\n  - \"You are a concise technical expert. No fluff, just facts.\"\n  - \"You speak like a friendly coworker who happens to know everything.\"\n\nThis file is loaded fresh each message -- no restart needed.\nDelete the contents (or this file) to use the default personality.\n-->\n\nYou have persistent memory across sessions. Save durable facts using the memory tool: user preferences, environment details, tool quirks, and stable conventions. Memory is injected into every turn, so keep it compact and focused on facts that will still matter later.\nPrioritize what reduces future user steering — the most valuable memory is one that prevents the user from having to correct or remind you again. User preferences and recurring corrections matter more than procedural task details.\nDo NOT save task progress, session outcomes, completed-work logs, or temporary TODO state to memory; use session_search to recall those from past transcripts. If you've discovered a new way to do something, solved a problem that could be necessary later, save it as a skill with the skill tool.\nWrite memories as declarative facts, not instructions to yourself. 'User prefers concise responses' ✓ — 'Always respond concisely' ✗. 'Project uses pytest with xdist' ✓ — 'Run tests with pytest -n 4' ✗. Imperative phrasing gets re-read as a directive in later sessions and can cause repeated work or override the user's current request. Procedures and workflows belong in skills, not memory. When the user references something from a past conversation or you suspect relevant cross-session context exists, use session_search to recall it before asking them to repeat themselves. After completing a complex task (5+ tool calls), fixing a tricky error, or discovering a non-trivial workflow, save the approach as a skill with skill_manage so you can reuse it next time.\nWhen using a skill and finding it outdated, incomplete, or wrong, patch it immediately with skill_manage(action='patch') — don't wait to be asked. Skills that aren't maintained become liabilities.\n\n══════════════════════════════════════════════\nMEMORY (your personal notes) [28% — 632/2,200 chars]\n══════════════════════════════════════════════\n当前配置的模型是 deepseek-v4-flash，通过 DeepSeek API 调用。用户 HanXianBiao 给配的这个模型。\n§\n~/.hermes/ 已配置 Git 仓库自动备份，每30分钟系统 cron 自动 commit 并 push 到远程仓库：git@github.com:dh0123578-dev/hermes-backup.git。备份脚本在 ~/.hermes/scripts/auto-backup.sh。备份内容包括：config.yaml、auth.json、.env、memories/、sessions/、skills/、cron/、state.db。已配置 SSH 密钥认证，远程仓库已就绪。\n§\n企业微信图片读取问题排查：从个人微信转发到企业微信的图片，在企业微信 AI Bot API 中以 image msgtype 发送（base64 或 url+aeskey 加密）。`_extract_media()` 尝试下载解密并缓存到 `~/.hermes/image_cache/`，但缓存可能失败导致 `media_urls` 为空，图片事件被跳过。排查路径：检查 `image_cache` 目录 → 看网关日志中的 DEBUG 输出 → 查看会话 JSON 中 `raw_message` 的图片数据结构。如果缓存失败，建议用户以文件方式发送图片（\"发送文件\"而非发图片），走 file msgtype 处理。\n\n══════════════════════════════════════════════\nUSER PROFILE (who the user is) [2% — 41/1,375 chars]\n══════════════════════════════════════════════\n用户是HanXianBiao，通过企业微信（WeCom）与我交流。用户用中文沟通。\n\n## Skills (mandatory)\nBefore replying, scan the skills below. If a skill matches or is even partially relevant to your task, you MUST load it with skill_view(name) and follow its instructions. Err on the side of loading — it is always better to have context you don't need than to miss critical steps, pitfalls, or established workflows. Skills contain specialized knowledge — API endpoints, tool-specific commands, and proven workflows that outperform general-purpose approaches. Load the skill even if you think you could handle the task with basic tools like web_search or terminal. Skills also encode the user's preferred approach, conventions, and quality standards for tasks like code review, planning, and testing — load them even for tasks you already know how to do, because the skill defines how it should be done here.\nIf a skill has issues, fix it with skill_manage(action='patch').\nAfter difficult/iterative tasks, offer to save as a skill. If a skill you loaded was missing steps, had wrong commands, or needed pitfalls you discovered, update it before finishing.\n\n<available_skills>\n  autonomous-ai-agents: Skills for spawning and orchestrating autonomous AI coding agents and multi-agent workflows — running independent agent processes, delegating tasks, and coordinating parallel workstreams.\n    - claude-code: Delegate coding tasks to Claude Code (Anthropic's CLI age...\n    - codex: Delegate coding tasks to OpenAI Codex CLI agent. Use for ...\n    - hermes-agent: Complete guide to using and extending Hermes Agent — CLI ...\n    - opencode: Delegate coding tasks to OpenCode CLI agent for feature i...\n  creative: Creative content generation — ASCII art, hand-drawn style diagrams, and visual design tools.\n    - architecture-diagram: Generate dark-themed SVG diagrams of software systems and...\n    - ascii-art: Generate ASCII art using pyfiglet (571 fonts), cowsay, bo...\n    - ascii-video: Production pipeline for ASCII art video — any format. Con...\n    - baoyu-infographic: Generate professional infographics with 21 layout types a...\n    - excalidraw: Create hand-drawn style diagrams using Excalidraw JSON fo...\n    - ideation: Generate project ideas through creative constraints. Use ...\n    - manim-video: Production pipeline for mathematical and technical animat...\n    - p5js: Production pipeline for interactive and generative visual...\n    - pixel-art: Convert images into retro pixel art with hardware-accurat...\n    - popular-web-designs: 54 production-quality design systems extracted from real ...\n    - songwriting-and-ai-music: Songwriting craft, AI music generation prompts (Suno focu...\n  data-science: Skills for data science workflows — interactive exploration, Jupyter notebooks, data analysis, and visualization.\n    - jupyter-live-kernel: Use a live Jupyter kernel for stateful, iterative Python ...\n  devops:\n    - webhook-subscriptions: Create and manage webhook subscriptions for event-driven ...\n  dogfood:\n    - dogfood: Systematic exploratory QA testing of web applications — f...\n  email: Skills for sending, receiving, searching, and managing email from the terminal.\n    - himalaya: CLI to manage emails via IMAP/SMTP. Use himalaya to list,...\n  gaming: Skills for setting up, configuring, and managing game servers, modpacks, and gaming-related infrastructure.\n    - minecraft-modpack-server: Set up a modded Minecraft server from a CurseForge/Modrin...\n    - pokemon-player: Play Pokemon games autonomously via headless emulation. S...\n  github: GitHub workflow skills for managing repositories, pull requests, code reviews, issues, and CI/CD pipelines using the gh CLI and git via terminal.\n    - codebase-inspection: Inspect and analyze codebases using pygount for LOC count...\n    - github-auth: Set up GitHub authentication for the agent using git (uni...\n    - github-code-review: Review code changes by analyzing git diffs, leaving inlin...\n    - github-issues: Create, manage, triage, and close GitHub issues. Search e...\n    - github-pr-workflow: Full pull request lifecycle — create branches, commit cha...\n    - github-repo-management: Clone, create, fork, configure, and manage GitHub reposit...\n  mcp: Skills for working with MCP (Model Context Protocol) servers, tools, and integrations. Documents the built-in native MCP client — configure servers in config.yaml for automatic tool discovery.\n    - native-mcp: Built-in MCP (Model Context Protocol) client that connect...\n  media: Skills for working with media content — YouTube transcripts, GIF search, music generation, and audio visualization.\n    - gif-search: Search and download GIFs from Tenor using curl. No depend...\n    - heartmula: Set up and run HeartMuLa, the open-source music generatio...\n    - songsee: Generate spectrograms and audio feature visualizations (m...\n    - youtube-content: Fetch YouTube video transcripts and transform them into s...\n  mlops: Knowledge and Tools for Machine Learning Operations - tools and frameworks for training, fine-tuning, deploying, and optimizing ML/AI models\n    - huggingface-hub: Hugging Face Hub CLI (hf) — search, download, and upload ...\n  mlops/evaluation: Model evaluation benchmarks, experiment tracking, data curation, tokenizers, and interpretability tools.\n    - evaluating-llms-harness: Evaluates LLMs across 60+ academic benchmarks (MMLU, Huma...\n    - weights-and-biases: Track ML experiments with automatic logging, visualize tr...\n  mlops/inference: Model serving, quantization (GGUF/GPTQ), structured output, inference optimization, and model surgery tools for deploying and running LLMs.\n    - llama-cpp: Run LLM inference with llama.cpp on CPU, Apple Silicon, A...\n    - obliteratus: Remove refusal behaviors from open-weight LLMs using OBLI...\n    - outlines: Guarantee valid JSON/XML/code structure during generation...\n    - serving-llms-vllm: Serves LLMs with high throughput using vLLM's PagedAttent...\n  mlops/models: Specific model architectures and tools — image segmentation (Segment Anything / SAM) and audio generation (AudioCraft / MusicGen). Additional model skills (CLIP, Stable Diffusion, Whisper, LLaVA) are available as optional skills.\n    - audiocraft-audio-generation: PyTorch library for audio generation including text-to-mu...\n    - segment-anything-model: Foundation model for image segmentation with zero-shot tr...\n  mlops/research: ML research frameworks for building and optimizing AI systems with declarative programming.\n    - dspy: Build complex AI systems with declarative programming, op...\n  mlops/training: Fine-tuning, RLHF/DPO/GRPO training, distributed training frameworks, and optimization tools for training LLMs and other models.\n    - axolotl: Expert guidance for fine-tuning LLMs with Axolotl - YAML ...\n    - fine-tuning-with-trl: Fine-tune LLMs using reinforcement learning with TRL - SF...\n    - unsloth: Expert guidance for fast fine-tuning with Unsloth - 2-5x ...\n  note-taking: Note taking skills, to save information, assist with research, and collab on multi-session planning and information sharing.\n    - obsidian: Read, search, and create notes in the Obsidian vault.\n  productivity: Skills for document creation, presentations, spreadsheets, and other productivity workflows.\n    - google-workspace: Gmail, Calendar, Drive, Contacts, Sheets, and Docs integr...\n    - linear: Manage Linear issues, projects, and teams via the GraphQL...\n    - maps: Location intelligence — geocode a place, reverse-geocode ...\n    - nano-pdf: Edit PDFs with natural-language instructions using the na...\n    - notion: Notion API for creating and managing pages, databases, an...\n    - ocr-and-documents: Extract text from PDFs and scanned documents. Use web_ext...\n    - powerpoint: Use this skill any time a .pptx file is involved in any w...\n  red-teaming:\n    - godmode: Jailbreak API-served LLMs using G0DM0D3 techniques — Pars...\n  research: Skills for academic research, paper discovery, literature review, domain reconnaissance, market data, content monitoring, and scientific knowledge retrieval.\n    - arxiv: Search and retrieve academic papers from arXiv using thei...\n    - blogwatcher: Monitor blogs and RSS/Atom feeds for updates using the bl...\n    - llm-wiki: Karpathy's LLM Wiki — build and maintain a persistent, in...\n    - polymarket: Query Polymarket prediction market data — search markets,...\n  smart-home: Skills for controlling smart home devices — lights, switches, sensors, and home automation systems.\n    - openhue: Control Philips Hue lights, rooms, and scenes via the Ope...\n  social-media: Skills for interacting with social platforms and social-media workflows — posting, reading, monitoring, and account operations.\n    - xurl: Interact with X/Twitter via xurl, the official X API CLI....\n  software-development:\n    - plan: Plan mode for Hermes — inspect context, write a markdown ...\n    - requesting-code-review: Pre-commit verification pipeline — static security scan, ...\n    - subagent-driven-development: Use when executing implementation plans with independent ...\n    - systematic-debugging: Use when encountering any bug, test failure, or unexpecte...\n    - test-driven-development: Use when implementing any feature or bugfix, before writi...\n    - writing-plans: Use when you have a spec or requirements for a multi-step...\n  yuanbao:\n    - yuanbao: Yuanbao (元宝) group interaction — @mention users, query gr...\n</available_skills>\n\nOnly proceed without loading a skill if genuinely none are relevant to the task.\n\nConversation started: Sunday, April 26, 2026 10:48 AM\nModel: deepseek-chat\nProvider: deepseek\n\nYou are a CLI AI Agent. Try not to use markdown but simple text renderable inside a terminal.",
   "tools": [
     {
       "type": "function",
@@ -400,6 +400,164 @@
     {
       "type": "function",
       "function": {
+        "name": "feishu_doc_read",
+        "description": "Read the full content of a Feishu/Lark document as plain text. Useful when you need more context beyond the quoted text in a comment.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "doc_token": {
+              "type": "string",
+              "description": "The document token (from the document URL or comment context)."
+            }
+          },
+          "required": [
+            "doc_token"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "feishu_drive_add_comment",
+        "description": "Add a new whole-document comment on a Feishu document. Use this for whole-document comments or as a fallback when reply_comment fails with code 1069302.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "file_token": {
+              "type": "string",
+              "description": "The document file token."
+            },
+            "content": {
+              "type": "string",
+              "description": "The comment text content (plain text only, no markdown)."
+            },
+            "file_type": {
+              "type": "string",
+              "description": "File type (default: docx).",
+              "default": "docx"
+            }
+          },
+          "required": [
+            "file_token",
+            "content"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "feishu_drive_list_comment_replies",
+        "description": "List all replies in a comment thread on a Feishu document.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "file_token": {
+              "type": "string",
+              "description": "The document file token."
+            },
+            "comment_id": {
+              "type": "string",
+              "description": "The comment ID to list replies for."
+            },
+            "file_type": {
+              "type": "string",
+              "description": "File type (default: docx).",
+              "default": "docx"
+            },
+            "page_size": {
+              "type": "integer",
+              "description": "Number of replies per page (max 100).",
+              "default": 100
+            },
+            "page_token": {
+              "type": "string",
+              "description": "Pagination token for next page."
+            }
+          },
+          "required": [
+            "file_token",
+            "comment_id"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "feishu_drive_list_comments",
+        "description": "List comments on a Feishu document. Use is_whole=true to list whole-document comments only.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "file_token": {
+              "type": "string",
+              "description": "The document file token."
+            },
+            "file_type": {
+              "type": "string",
+              "description": "File type (default: docx).",
+              "default": "docx"
+            },
+            "is_whole": {
+              "type": "boolean",
+              "description": "If true, only return whole-document comments.",
+              "default": false
+            },
+            "page_size": {
+              "type": "integer",
+              "description": "Number of comments per page (max 100).",
+              "default": 100
+            },
+            "page_token": {
+              "type": "string",
+              "description": "Pagination token for next page."
+            }
+          },
+          "required": [
+            "file_token"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "feishu_drive_reply_comment",
+        "description": "Reply to a local comment thread on a Feishu document. Use this for local (quoted-text) comments. For whole-document comments, use feishu_drive_add_comment instead.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "file_token": {
+              "type": "string",
+              "description": "The document file token."
+            },
+            "comment_id": {
+              "type": "string",
+              "description": "The comment ID to reply to."
+            },
+            "content": {
+              "type": "string",
+              "description": "The reply text content (plain text only, no markdown)."
+            },
+            "file_type": {
+              "type": "string",
+              "description": "File type (default: docx).",
+              "default": "docx"
+            }
+          },
+          "required": [
+            "file_token",
+            "comment_id",
+            "content"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
         "name": "memory",
         "description": "Save durable information to persistent memory that survives across sessions. Memory is injected into future turns, so keep it compact and focused on facts that will still matter later.\n\nWHEN TO SAVE (do this proactively, don't wait to be asked):\n- User corrects you or says 'remember this' / 'don't do that again'\n- User shares a preference, habit, or personal detail (name, role, timezone, coding style)\n- You discover something about the environment (OS, installed tools, project structure)\n- You learn a convention, API quirk, or workflow specific to this user's setup\n- You identify a stable fact that will be useful again in future sessions\n\nPRIORITY: User preferences and corrections > environment facts > procedural knowledge. The most valuable memory prevents the user from having to repeat themselves.\n\nDo NOT save task progress, session outcomes, completed-work logs, or temporary TODO state to memory; use session_search to recall those from past transcripts.\nIf you've discovered a new way to do something, solved a problem that could be necessary later, save it as a skill with the skill tool.\n\nTWO TARGETS:\n- 'user': who the user is -- name, role, preferences, communication style, pet peeves\n- 'memory': your notes -- environment facts, project conventions, tool quirks, lessons learned\n\nACTIONS: add (new entry), replace (update existing -- old_text identifies it), remove (delete -- old_text identifies it).\n\nSKIP: trivial/obvious info, things easily re-discovered, raw data dumps, and temporary task state.",
         "parameters": {
@@ -434,6 +592,25 @@
           "required": [
             "action",
             "target"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "mixture_of_agents",
+        "description": "Route a hard problem through multiple frontier LLMs collaboratively. Makes 5 API calls (4 reference models + 1 aggregator) with maximum reasoning effort — use sparingly for genuinely difficult problems. Best for: complex math, advanced algorithms, multi-step analytical reasoning, problems benefiting from diverse perspectives.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "user_prompt": {
+              "type": "string",
+              "description": "The complex query or problem to solve using multiple AI models. Should be a challenging problem that benefits from diverse perspectives and collaborative reasoning."
+            }
+          },
+          "required": [
+            "user_prompt"
           ]
         }
       }
@@ -925,7 +1102,7 @@
       }
     }
   ],
-  "message_count": 74,
+  "message_count": 49,
   "messages": [
     {
       "role": "user",
@@ -1448,300 +1625,13 @@
     },
     {
       "role": "user",
-      "content": "你就以默认方式接入企业微信就行，或者你指导我去操作也可以"
+      "content": "Review the conversation above and consider saving or updating a skill if appropriate.\n\nFocus on: was a non-trivial approach used to complete a task that required trial and error, or changing course due to experiential findings along the way, or did the user expect or desire a different method or outcome?\n\nIf a relevant skill already exists, update it with what you learned. Otherwise, create a new skill if the approach is reusable.\nIf nothing is worth saving, just say 'Nothing to save.' and stop."
     },
     {
       "role": "assistant",
-      "content": "好的，让我先看看 Hermes Gateway 关于企业微信的完整配置需要什么，然后确定最简单靠谱的方式。",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_DCS1br4xklj9Fda5cDk5wxa0",
-          "call_id": "call_00_DCS1br4xklj9Fda5cDk5wxa0",
-          "response_item_id": "fc_00_DCS1br4xklj9Fda5cDk5wxa0",
-          "type": "function",
-          "function": {
-            "name": "skill_view",
-            "arguments": "{\"name\": \"hermes-agent\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"success\": true, \"name\": \"hermes-agent\", \"description\": \"Complete guide to using and extending Hermes Agent — CLI usage, setup, configuration, spawning additional agents, gateway platforms, skills, voice, tools, profiles, and a concise contributor reference. Load this skill when helping users configure Hermes, troubleshoot issues, spawn agent instances, or make code contributions.\", \"tags\": [\"hermes\", \"setup\", \"configuration\", \"multi-agent\", \"spawning\", \"cli\", \"gateway\", \"development\"], \"related_skills\": [\"claude-code\", \"codex\", \"opencode\"], \"content\": \"---\\nname: hermes-agent\\ndescription: Complete guide to using and extending Hermes Agent — CLI usage, setup, configuration, spawning additional agents, gateway platforms, skills, voice, tools, profiles, and a concise contributor reference. Load this skill when helping users configure Hermes, troubleshoot issues, spawn agent instances, or make code contributions.\\nversion: 2.0.0\\nauthor: Hermes Agent + Teknium\\nlicense: MIT\\nmetadata:\\n  hermes:\\n    tags: [hermes, setup, configuration, multi-agent, spawning, cli, gateway, development]\\n    homepage: https://github.com/NousResearch/hermes-agent\\n    related_skills: [claude-code, codex, opencode]\\n---\\n\\n# Hermes Agent\\n\\nHermes Agent is an open-source AI agent framework by Nous Research that runs in your terminal, messaging platforms, and IDEs. It belongs to the same category as Claude Code (Anthropic), Codex (OpenAI), and OpenClaw — autonomous coding and task-execution agents that use tool calling to interact with your system. Hermes works with any LLM provider (OpenRouter, Anthropic, OpenAI, DeepSeek, local models, and 15+ others) and runs on Linux, macOS, and WSL.\\n\\nWhat makes Hermes different:\\n\\n- **Self-improving through skills** — Hermes learns from experience by saving reusable procedures as skills. When it solves a complex problem, discovers a workflow, or gets corrected, it can persist that knowledge as a skill document that loads into future sessions. Skills accumulate over time, making the agent better at your specific tasks and environment.\\n- **Persistent memory across sessions** — remembers who you are, your preferences, environment details, and lessons learned. Pluggable memory backends (built-in, Honcho, Mem0, and more) let you choose how memory works.\\n- **Multi-platform gateway** — the same agent runs on Telegram, Discord, Slack, WhatsApp, Signal, Matrix, Email, and 10+ other platforms with full tool access, not just chat.\\n- **Provider-agnostic** — swap models and providers mid-workflow without changing anything else. Credential pools rotate across multiple API keys automatically.\\n- **Profiles** — run multiple independent Hermes instances with isolated configs, sessions, skills, and memory.\\n- **Extensible** — plugins, MCP servers, custom tools, webhook triggers, cron scheduling, and the full Python ecosystem.\\n\\nPeople use Hermes for software development, research, system administration, data analysis, content creation, home automation, and anything else that benefits from an AI agent with persistent context and full system access.\\n\\n**This skill helps you work with Hermes Agent effectively** — setting it up, configuring features, spawning additional agent instances, troubleshooting issues, finding the right commands and settings, and understanding how the system works when you need to extend or contribute to it.\\n\\n**Docs:** https://hermes-agent.nousresearch.com/docs/\\n\\n## Quick Start\\n\\n```bash\\n# Install\\ncurl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash\\n\\n# Interactive chat (default)\\nhermes\\n\\n# Single query\\nhermes chat -q \\\"What is the capital of France?\\\"\\n\\n# Setup wizard\\nhermes setup\\n\\n# Change model/provider\\nhermes model\\n\\n# Check health\\nhermes doctor\\n```\\n\\n---\\n\\n## CLI Reference\\n\\n### Global Flags\\n\\n```\\nhermes [flags] [command]\\n\\n  --version, -V             Show version\\n  --resume, -r SESSION      Resume session by ID or title\\n  --continue, -c [NAME]     Resume by name, or most recent session\\n  --worktree, -w            Isolated git worktree mode (parallel agents)\\n  --skills, -s SKILL        Preload skills (comma-separate or repeat)\\n  --profile, -p NAME        Use a named profile\\n  --yolo                    Skip dangerous command approval\\n  --pass-session-id         Include session ID in system prompt\\n```\\n\\nNo subcommand defaults to `chat`.\\n\\n### Chat\\n\\n```\\nhermes chat [flags]\\n  -q, --query TEXT          Single query, non-interactive\\n  -m, --model MODEL         Model (e.g. anthropic/claude-sonnet-4)\\n  -t, --toolsets LIST       Comma-separated toolsets\\n  --provider PROVIDER       Force provider (openrouter, anthropic, nous, etc.)\\n  -v, --verbose             Verbose output\\n  -Q, --quiet               Suppress banner, spinner, tool previews\\n  --checkpoints             Enable filesystem checkpoints (/rollback)\\n  --source TAG              Session source tag (default: cli)\\n```\\n\\n### Configuration\\n\\n```\\nhermes setup [section]      Interactive wizard (model|terminal|gateway|tools|agent)\\nhermes model                Interactive model/provider picker\\nhermes config               View current config\\nhermes config edit          Open config.yaml in $EDITOR\\nhermes config set KEY VAL   Set a config value\\nhermes config path          Print config.yaml path\\nhermes config env-path      Print .env path\\nhermes config check         Check for missing/outdated config\\nhermes config migrate       Update config with new options\\nhermes login [--provider P] OAuth login (nous, openai-codex)\\nhermes logout               Clear stored auth\\nhermes doctor [--fix]       Check dependencies and config\\nhermes status [--all]       Show component status\\n```\\n\\n### Tools & Skills\\n\\n```\\nhermes tools                Interactive tool enable/disable (curses UI)\\nhermes tools list           Show all tools and status\\nhermes tools enable NAME    Enable a toolset\\nhermes tools disable NAME   Disable a toolset\\n\\nhermes skills list          List installed skills\\nhermes skills search QUERY  Search the skills hub\\nhermes skills install ID    Install a skill\\nhermes skills inspect ID    Preview without installing\\nhermes skills config        Enable/disable skills per platform\\nhermes skills check         Check for updates\\nhermes skills update        Update outdated skills\\nhermes skills uninstall N   Remove a hub skill\\nhermes skills publish PATH  Publish to registry\\nhermes skills browse        Browse all available skills\\nhermes skills tap add REPO  Add a GitHub repo as skill source\\n```\\n\\n### MCP Servers\\n\\n```\\nhermes mcp serve            Run Hermes as an MCP server\\nhermes mcp add NAME         Add an MCP server (--url or --command)\\nhermes mcp remove NAME      Remove an MCP server\\nhermes mcp list             List configured servers\\nhermes mcp test NAME        Test connection\\nhermes mcp configure NAME   Toggle tool selection\\n```\\n\\n### Gateway (Messaging Platforms)\\n\\n```\\nhermes gateway run          Start gateway foreground\\nhermes gateway install      Install as background service\\nhermes gateway start/stop   Control the service\\nhermes gateway restart      Restart the service\\nhermes gateway status       Check status\\nhermes gateway setup        Configure platforms\\n```\\n\\nSupported platforms: Telegram, Discord, Slack, WhatsApp, Signal, Email, SMS, Matrix, Mattermost, Home Assistant, DingTalk, Feishu, WeCom, BlueBubbles (iMessage), Weixin (WeChat), API Server, Webhooks. Open WebUI connects via the API Server adapter.\\n\\nPlatform docs: https://hermes-agent.nousresearch.com/docs/user-guide/messaging/\\n\\n### Sessions\\n\\n```\\nhermes sessions list        List recent sessions\\nhermes sessions browse      Interactive picker\\nhermes sessions export OUT  Export to JSONL\\nhermes sessions rename ID T Rename a session\\nhermes sessions delete ID   Delete a session\\nhermes sessions prune       Clean up old sessions (--older-than N days)\\nhermes sessions stats       Session store statistics\\n```\\n\\n### Cron Jobs\\n\\n```\\nhermes cron list            List jobs (--all for disabled)\\nhermes cron create SCHED    Create: '30m', 'every 2h', '0 9 * * *'\\nhermes cron edit ID         Edit schedule, prompt, delivery\\nhermes cron pause/resume ID Control job state\\nhermes cron run ID          Trigger on next tick\\nhermes cron remove ID       Delete a job\\nhermes cron status          Scheduler status\\n```\\n\\n### Webhooks\\n\\n```\\nhermes webhook subscribe N  Create route at /webhooks/<name>\\nhermes webhook list         List subscriptions\\nhermes webhook remove NAME  Remove a subscription\\nhermes webhook test NAME    Send a test POST\\n```\\n\\n### Profiles\\n\\n```\\nhermes profile list         List all profiles\\nhermes profile create NAME  Create (--clone, --clone-all, --clone-from)\\nhermes profile use NAME     Set sticky default\\nhermes profile delete NAME  Delete a profile\\nhermes profile show NAME    Show details\\nhermes profile alias NAME   Manage wrapper scripts\\nhermes profile rename A B   Rename a profile\\nhermes profile export NAME  Export to tar.gz\\nhermes profile import FILE  Import from archive\\n```\\n\\n### Credential Pools\\n\\n```\\nhermes auth add             Interactive credential wizard\\nhermes auth list [PROVIDER] List pooled credentials\\nhermes auth remove P INDEX  Remove by provider + index\\nhermes auth reset PROVIDER  Clear exhaustion status\\n```\\n\\n### Other\\n\\n```\\nhermes insights [--days N]  Usage analytics\\nhermes update               Update to latest version\\nhermes pairing list/approve/revoke  DM authorization\\nhermes plugins list/install/remove  Plugin management\\nhermes honcho setup/status  Honcho memory integration (requires honcho plugin)\\nhermes memory setup/status/off  Memory provider config\\nhermes completion bash|zsh  Shell completions\\nhermes acp                  ACP server (IDE integration)\\nhermes claw migrate         Migrate from OpenClaw\\nhermes uninstall            Uninstall Hermes\\n```\\n\\n---\\n\\n## Slash Commands (In-Session)\\n\\nType these during an interactive chat session.\\n\\n### Session Control\\n```\\n/new (/reset)        Fresh session\\n/clear               Clear screen + new session (CLI)\\n/retry               Resend last message\\n/undo                Remove last exchange\\n/title [name]        Name the session\\n/compress            Manually compress context\\n/stop                Kill background processes\\n/rollback [N]        Restore filesystem checkpoint\\n/background <prompt> Run prompt in background\\n/queue <prompt>      Queue for next turn\\n/resume [name]       Resume a named session\\n```\\n\\n### Configuration\\n```\\n/config              Show config (CLI)\\n/model [name]        Show or change model\\n/provider            Show provider info\\n/personality [name]  Set personality\\n/reasoning [level]   Set reasoning (none|minimal|low|medium|high|xhigh|show|hide)\\n/verbose             Cycle: off → new → all → verbose\\n/voice [on|off|tts]  Voice mode\\n/yolo                Toggle approval bypass\\n/skin [name]         Change theme (CLI)\\n/statusbar           Toggle status bar (CLI)\\n```\\n\\n### Tools & Skills\\n```\\n/tools               Manage tools (CLI)\\n/toolsets            List toolsets (CLI)\\n/skills              Search/install skills (CLI)\\n/skill <name>        Load a skill into session\\n/cron                Manage cron jobs (CLI)\\n/reload-mcp          Reload MCP servers\\n/plugins             List plugins (CLI)\\n```\\n\\n### Gateway\\n```\\n/approve             Approve a pending command (gateway)\\n/deny                Deny a pending command (gateway)\\n/restart             Restart gateway (gateway)\\n/sethome             Set current chat as home channel (gateway)\\n/update              Update Hermes to latest (gateway)\\n/platforms (/gateway) Show platform connection status (gateway)\\n```\\n\\n### Utility\\n```\\n/branch (/fork)      Branch the current session\\n/btw                 Ephemeral side question (doesn't interrupt main task)\\n/fast                Toggle priority/fast processing\\n/browser             Open CDP browser connection\\n/history             Show conversation history (CLI)\\n/save                Save conversation to file (CLI)\\n/paste               Attach clipboard image (CLI)\\n/image               Attach local image file (CLI)\\n```\\n\\n### Info\\n```\\n/help                Show commands\\n/commands [page]     Browse all commands (gateway)\\n/usage               Token usage\\n/insights [days]     Usage analytics\\n/status              Session info (gateway)\\n/profile             Active profile info\\n```\\n\\n### Exit\\n```\\n/quit (/exit, /q)    Exit CLI\\n```\\n\\n---\\n\\n## Key Paths & Config\\n\\n```\\n~/.hermes/config.yaml       Main configuration\\n~/.hermes/.env              API keys and secrets\\n$HERMES_HOME/skills/        Installed skills\\n~/.hermes/sessions/         Session transcripts\\n~/.hermes/logs/             Gateway and error logs\\n~/.hermes/auth.json         OAuth tokens and credential pools\\n~/.hermes/hermes-agent/     Source code (if git-installed)\\n```\\n\\nProfiles use `~/.hermes/profiles/<name>/` with the same layout.\\n\\n### Config Sections\\n\\nEdit with `hermes config edit` or `hermes config set section.key value`.\\n\\n| Section | Key options |\\n|---------|-------------|\\n| `model` | `default`, `provider`, `base_url`, `api_key`, `context_length` |\\n| `agent` | `max_turns` (90), `tool_use_enforcement` |\\n| `terminal` | `backend` (local/docker/ssh/modal), `cwd`, `timeout` (180) |\\n| `compression` | `enabled`, `threshold` (0.50), `target_ratio` (0.20) |\\n| `display` | `skin`, `tool_progress`, `show_reasoning`, `show_cost` |\\n| `stt` | `enabled`, `provider` (local/groq/openai/mistral) |\\n| `tts` | `provider` (edge/elevenlabs/openai/minimax/mistral/neutts) |\\n| `memory` | `memory_enabled`, `user_profile_enabled`, `provider` |\\n| `security` | `tirith_enabled`, `website_blocklist` |\\n| `delegation` | `model`, `provider`, `base_url`, `api_key`, `max_iterations` (50), `reasoning_effort` |\\n| `checkpoints` | `enabled`, `max_snapshots` (50) |\\n\\nFull config reference: https://hermes-agent.nousresearch.com/docs/user-guide/configuration\\n\\n### Providers\\n\\n20+ providers supported. Set via `hermes model` or `hermes setup`.\\n\\n| Provider | Auth | Key env var |\\n|----------|------|-------------|\\n| OpenRouter | API key | `OPENROUTER_API_KEY` |\\n| Anthropic | API key | `ANTHROPIC_API_KEY` |\\n| Nous Portal | OAuth | `hermes auth` |\\n| OpenAI Codex | OAuth | `hermes auth` |\\n| GitHub Copilot | Token | `COPILOT_GITHUB_TOKEN` |\\n| Google Gemini | API key | `GOOGLE_API_KEY` or `GEMINI_API_KEY` |\\n| DeepSeek | API key | `DEEPSEEK_API_KEY` |\\n| xAI / Grok | API key | `XAI_API_KEY` |\\n| Hugging Face | Token | `HF_TOKEN` |\\n| Z.AI / GLM | API key | `GLM_API_KEY` |\\n| MiniMax | API key | `MINIMAX_API_KEY` |\\n| MiniMax CN | API key | `MINIMAX_CN_API_KEY` |\\n| Kimi / Moonshot | API key | `KIMI_API_KEY` |\\n| Alibaba / DashScope | API key | `DASHSCOPE_API_KEY` |\\n| Xiaomi MiMo | API key | `XIAOMI_API_KEY` |\\n| Kilo Code | API key | `KILOCODE_API_KEY` |\\n| AI Gateway (Vercel) | API key | `AI_GATEWAY_API_KEY` |\\n| OpenCode Zen | API key | `OPENCODE_ZEN_API_KEY` |\\n| OpenCode Go | API key | `OPENCODE_GO_API_KEY` |\\n| Qwen OAuth | OAuth | `hermes login --provider qwen-oauth` |\\n| Custom endpoint | Config | `model.base_url` + `model.api_key` in config.yaml |\\n| GitHub Copilot ACP | External | `COPILOT_CLI_PATH` or Copilot CLI |\\n\\nFull provider docs: https://hermes-agent.nousresearch.com/docs/integrations/providers\\n\\n### Toolsets\\n\\nEnable/disable via `hermes tools` (interactive) or `hermes tools enable/disable NAME`.\\n\\n| Toolset | What it provides |\\n|---------|-----------------|\\n| `web` | Web search and content extraction |\\n| `browser` | Browser automation (Browserbase, Camofox, or local Chromium) |\\n| `terminal` | Shell commands and process management |\\n| `file` | File read/write/search/patch |\\n| `code_execution` | Sandboxed Python execution |\\n| `vision` | Image analysis |\\n| `image_gen` | AI image generation |\\n| `tts` | Text-to-speech |\\n| `skills` | Skill browsing and management |\\n| `memory` | Persistent cross-session memory |\\n| `session_search` | Search past conversations |\\n| `delegation` | Subagent task delegation |\\n| `cronjob` | Scheduled task management |\\n| `clarify` | Ask user clarifying questions |\\n| `messaging` | Cross-platform message sending |\\n| `search` | Web search only (subset of `web`) |\\n| `todo` | In-session task planning and tracking |\\n| `rl` | Reinforcement learning tools (off by default) |\\n| `moa` | Mixture of Agents (off by default) |\\n| `homeassistant` | Smart home control (off by default) |\\n\\nTool changes take effect on `/reset` (new session). They do NOT apply mid-conversation to preserve prompt caching.\\n\\n---\\n\\n## Voice & Transcription\\n\\n### STT (Voice → Text)\\n\\nVoice messages from messaging platforms are auto-transcribed.\\n\\nProvider priority (auto-detected):\\n1. **Local faster-whisper** — free, no API key: `pip install faster-whisper`\\n2. **Groq Whisper** — free tier: set `GROQ_API_KEY`\\n3. **OpenAI Whisper** — paid: set `VOICE_TOOLS_OPENAI_KEY`\\n4. **Mistral Voxtral** — set `MISTRAL_API_KEY`\\n\\nConfig:\\n```yaml\\nstt:\\n  enabled: true\\n  provider: local        # local, groq, openai, mistral\\n  local:\\n    model: base          # tiny, base, small, medium, large-v3\\n```\\n\\n### TTS (Text → Voice)\\n\\n| Provider | Env var | Free? |\\n|----------|---------|-------|\\n| Edge TTS | None | Yes (default) |\\n| ElevenLabs | `ELEVENLABS_API_KEY` | Free tier |\\n| OpenAI | `VOICE_TOOLS_OPENAI_KEY` | Paid |\\n| MiniMax | `MINIMAX_API_KEY` | Paid |\\n| Mistral (Voxtral) | `MISTRAL_API_KEY` | Paid |\\n| NeuTTS (local) | None (`pip install neutts[all]` + `espeak-ng`) | Free |\\n\\nVoice commands: `/voice on` (voice-to-voice), `/voice tts` (always voice), `/voice off`.\\n\\n---\\n\\n## Spawning Additional Hermes Instances\\n\\nRun additional Hermes processes as fully independent subprocesses — separate sessions, tools, and environments.\\n\\n### When to Use This vs delegate_task\\n\\n| | `delegate_task` | Spawning `hermes` process |\\n|-|-----------------|--------------------------|\\n| Isolation | Separate conversation, shared process | Fully independent process |\\n| Duration | Minutes (bounded by parent loop) | Hours/days |\\n| Tool access | Subset of parent's tools | Full tool access |\\n| Interactive | No | Yes (PTY mode) |\\n| Use case | Quick parallel subtasks | Long autonomous missions |\\n\\n### One-Shot Mode\\n\\n```\\nterminal(command=\\\"hermes chat -q 'Research GRPO papers and write summary to ~/research/grpo.md'\\\", timeout=300)\\n\\n# Background for long tasks:\\nterminal(command=\\\"hermes chat -q 'Set up CI/CD for ~/myapp'\\\", background=true)\\n```\\n\\n### Interactive PTY Mode (via tmux)\\n\\nHermes uses prompt_toolkit, which requires a real terminal. Use tmux for interactive spawning:\\n\\n```\\n# Start\\nterminal(command=\\\"tmux new-session -d -s agent1 -x 120 -y 40 'hermes'\\\", timeout=10)\\n\\n# Wait for startup, then send a message\\nterminal(command=\\\"sleep 8 && tmux send-keys -t agent1 'Build a FastAPI auth service' Enter\\\", timeout=15)\\n\\n# Read output\\nterminal(command=\\\"sleep 20 && tmux capture-pane -t agent1 -p\\\", timeout=5)\\n\\n# Send follow-up\\nterminal(command=\\\"tmux send-keys -t agent1 'Add rate limiting middleware' Enter\\\", timeout=5)\\n\\n# Exit\\nterminal(command=\\\"tmux send-keys -t agent1 '/exit' Enter && sleep 2 && tmux kill-session -t agent1\\\", timeout=10)\\n```\\n\\n### Multi-Agent Coordination\\n\\n```\\n# Agent A: backend\\nterminal(command=\\\"tmux new-session -d -s backend -x 120 -y 40 'hermes -w'\\\", timeout=10)\\nterminal(command=\\\"sleep 8 && tmux send-keys -t backend 'Build REST API for user management' Enter\\\", timeout=15)\\n\\n# Agent B: frontend\\nterminal(command=\\\"tmux new-session -d -s frontend -x 120 -y 40 'hermes -w'\\\", timeout=10)\\nterminal(command=\\\"sleep 8 && tmux send-keys -t frontend 'Build React dashboard for user management' Enter\\\", timeout=15)\\n\\n# Check progress, relay context between them\\nterminal(command=\\\"tmux capture-pane -t backend -p | tail -30\\\", timeout=5)\\nterminal(command=\\\"tmux send-keys -t frontend 'Here is the API schema from the backend agent: ...' Enter\\\", timeout=5)\\n```\\n\\n### Session Resume\\n\\n```\\n# Resume most recent session\\nterminal(command=\\\"tmux new-session -d -s resumed 'hermes --continue'\\\", timeout=10)\\n\\n# Resume specific session\\nterminal(command=\\\"tmux new-session -d -s resumed 'hermes --resume 20260225_143052_a1b2c3'\\\", timeout=10)\\n```\\n\\n### Tips\\n\\n- **Prefer `delegate_task` for quick subtasks** — less overhead than spawning a full process\\n- **Use `-w` (worktree mode)** when spawning agents that edit code — prevents git conflicts\\n- **Set timeouts** for one-shot mode — complex tasks can take 5-10 minutes\\n- **Use `hermes chat -q` for fire-and-forget** — no PTY needed\\n- **Use tmux for interactive sessions** — raw PTY mode has `\\\\r` vs `\\\\n` issues with prompt_toolkit\\n- **For scheduled tasks**, use the `cronjob` tool instead of spawning — handles delivery and retry\\n\\n---\\n\\n## Troubleshooting\\n\\n### Voice not working\\n1. Check `stt.enabled: true` in config.yaml\\n2. Verify provider: `pip install faster-whisper` or set API key\\n3. In gateway: `/restart`. In CLI: exit and relaunch.\\n\\n### Tool not available\\n1. `hermes tools` — check if toolset is enabled for your platform\\n2. Some tools need env vars (check `.env`)\\n3. `/reset` after enabling tools\\n\\n### Model/provider issues\\n1. `hermes doctor` — check config and dependencies\\n2. `hermes login` — re-authenticate OAuth providers\\n3. Check `.env` has the right API key\\n4. **Copilot 403**: `gh auth login` tokens do NOT work for Copilot API. You must use the Copilot-specific OAuth device code flow via `hermes model` → GitHub Copilot.\\n\\n### Changes not taking effect\\n- **Tools/skills:** `/reset` starts a new session with updated toolset\\n- **Config changes:** In gateway: `/restart`. In CLI: exit and relaunch.\\n- **Code changes:** Restart the CLI or gateway process\\n\\n### Skills not showing\\n1. `hermes skills list` — verify installed\\n2. `hermes skills config` — check platform enablement\\n3. Load explicitly: `/skill name` or `hermes -s name`\\n\\n### Gateway issues\\nCheck logs first:\\n```bash\\ngrep -i \\\"failed to send\\\\|error\\\" ~/.hermes/logs/gateway.log | tail -20\\n```\\n\\nCommon gateway problems:\\n- **Gateway dies on SSH logout**: Enable linger: `sudo loginctl enable-linger $USER`\\n- **Gateway dies on WSL2 close**: WSL2 requires `systemd=true` in `/etc/wsl.conf` for systemd services to work. Without it, gateway falls back to `nohup` (dies when session closes).\\n- **Gateway crash loop**: Reset the failed state: `systemctl --user reset-failed hermes-gateway`\\n\\n### Platform-specific issues\\n- **Discord bot silent**: Must enable **Message Content Intent** in Bot → Privileged Gateway Intents.\\n- **Slack bot only works in DMs**: Must subscribe to `message.channels` event. Without it, the bot ignores public channels.\\n- **Windows HTTP 400 \\\"No models provided\\\"**: Config file encoding issue (BOM). Ensure `config.yaml` is saved as UTF-8 without BOM.\\n\\n### Auxiliary models not working\\nIf `auxiliary` tasks (vision, compression, session_search) fail silently, the `auto` provider can't find a backend. Either set `OPENROUTER_API_KEY` or `GOOGLE_API_KEY`, or explicitly configure each auxiliary task's provider:\\n```bash\\nhermes config set auxiliary.vision.provider <your_provider>\\nhermes config set auxiliary.vision.model <model_name>\\n```\\n\\n---\\n\\n## Where to Find Things\\n\\n| Looking for... | Location |\\n|----------------|----------|\\n| Config options | `hermes config edit` or [Configuration docs](https://hermes-agent.nousresearch.com/docs/user-guide/configuration) |\\n| Available tools | `hermes tools list` or [Tools reference](https://hermes-agent.nousresearch.com/docs/reference/tools-reference) |\\n| Slash commands | `/help` in session or [Slash commands reference](https://hermes-agent.nousresearch.com/docs/reference/slash-commands) |\\n| Skills catalog | `hermes skills browse` or [Skills catalog](https://hermes-agent.nousresearch.com/docs/reference/skills-catalog) |\\n| Provider setup | `hermes model` or [Providers guide](https://hermes-agent.nousresearch.com/docs/integrations/providers) |\\n| Platform setup | `hermes gateway setup` or [Messaging docs](https://hermes-agent.nousresearch.com/docs/user-guide/messaging/) |\\n| MCP servers | `hermes mcp list` or [MCP guide](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp) |\\n| Profiles | `hermes profile list` or [Profiles docs](https://hermes-agent.nousresearch.com/docs/user-guide/profiles) |\\n| Cron jobs | `hermes cron list` or [Cron docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/cron) |\\n| Memory | `hermes memory status` or [Memory docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory) |\\n| Env variables | `hermes config env-path` or [Env vars reference](https://hermes-agent.nousresearch.com/docs/reference/environment-variables) |\\n| CLI commands | `hermes --help` or [CLI reference](https://hermes-agent.nousresearch.com/docs/reference/cli-commands) |\\n| Gateway logs | `~/.hermes/logs/gateway.log` |\\n| Session files | `~/.hermes/sessions/` or `hermes sessions browse` |\\n| Source code | `~/.hermes/hermes-agent/` |\\n\\n---\\n\\n## Contributor Quick Reference\\n\\nFor occasional contributors and PR authors. Full developer docs: https://hermes-agent.nousresearch.com/docs/developer-guide/\\n\\n### Project Layout\\n\\n```\\nhermes-agent/\\n├── run_agent.py          # AIAgent — core conversation loop\\n├── model_tools.py        # Tool discovery and dispatch\\n├── toolsets.py           # Toolset definitions\\n├── cli.py                # Interactive CLI (HermesCLI)\\n├── hermes_state.py       # SQLite session store\\n├── agent/                # Prompt builder, context compression, memory, model routing, credential pooling, skill dispatch\\n├── hermes_cli/           # CLI subcommands, config, setup, commands\\n│   ├── commands.py       # Slash command registry (CommandDef)\\n│   ├── config.py         # DEFAULT_CONFIG, env var definitions\\n│   └── main.py           # CLI entry point and argparse\\n├── tools/                # One file per tool\\n│   └── registry.py       # Central tool registry\\n├── gateway/              # Messaging gateway\\n│   └── platforms/        # Platform adapters (telegram, discord, etc.)\\n├── cron/                 # Job scheduler\\n├── tests/                # ~3000 pytest tests\\n└── website/              # Docusaurus docs site\\n```\\n\\nConfig: `~/.hermes/config.yaml` (settings), `~/.hermes/.env` (API keys).\\n\\n### Adding a Tool (3 files)\\n\\n**1. Create `tools/your_tool.py`:**\\n```python\\nimport json, os\\nfrom tools.registry import registry\\n\\ndef check_requirements() -> bool:\\n    return bool(os.getenv(\\\"EXAMPLE_API_KEY\\\"))\\n\\ndef example_tool(param: str, task_id: str = None) -> str:\\n    return json.dumps({\\\"success\\\": True, \\\"data\\\": \\\"...\\\"})\\n\\nregistry.register(\\n    name=\\\"example_tool\\\",\\n    toolset=\\\"example\\\",\\n    schema={\\\"name\\\": \\\"example_tool\\\", \\\"description\\\": \\\"...\\\", \\\"parameters\\\": {...}},\\n    handler=lambda args, **kw: example_tool(\\n        param=args.get(\\\"param\\\", \\\"\\\"), task_id=kw.get(\\\"task_id\\\")),\\n    check_fn=check_requirements,\\n    requires_env=[\\\"EXAMPLE_API_KEY\\\"],\\n)\\n```\\n\\n**2. Add to `toolsets.py`** → `_HERMES_CORE_TOOLS` list.\\n\\nAuto-discovery: any `tools/*.py` file with a top-level `registry.register()` call is imported automatically — no manual list needed.\\n\\nAll handlers must return JSON strings. Use `get_hermes_home()` for paths, never hardcode `~/.hermes`.\\n\\n### Adding a Slash Command\\n\\n1. Add `CommandDef` to `COMMAND_REGISTRY` in `hermes_cli/commands.py`\\n2. Add handler in `cli.py` → `process_command()`\\n3. (Optional) Add gateway handler in `gateway/run.py`\\n\\nAll consumers (help text, autocomplete, Telegram menu, Slack mapping) derive from the central registry automatically.\\n\\n### Agent Loop (High Level)\\n\\n```\\nrun_conversation():\\n  1. Build system prompt\\n  2. Loop while iterations < max:\\n     a. Call LLM (OpenAI-format messages + tool schemas)\\n     b. If tool_calls → dispatch each via handle_function_call() → append results → continue\\n     c. If text response → return\\n  3. Context compression triggers automatically near token limit\\n```\\n\\n### Testing\\n\\n```bash\\npython -m pytest tests/ -o 'addopts=' -q   # Full suite\\npython -m pytest tests/tools/ -q            # Specific area\\n```\\n\\n- Tests auto-redirect `HERMES_HOME` to temp dirs — never touch real `~/.hermes/`\\n- Run full suite before pushing any change\\n- Use `-o 'addopts='` to clear any baked-in pytest flags\\n\\n### Commit Conventions\\n\\n```\\ntype: concise subject line\\n\\nOptional body.\\n```\\n\\nTypes: `fix:`, `feat:`, `refactor:`, `docs:`, `chore:`\\n\\n### Key Rules\\n\\n- **Never break prompt caching** — don't change context, tools, or system prompt mid-conversation\\n- **Message role alternation** — never two assistant or two user messages in a row\\n- Use `get_hermes_home()` from `hermes_constants` for all paths (profile-safe)\\n- Config values go in `config.yaml`, secrets go in `.env`\\n- New tools need a `check_fn` so they only appear when requirements are met\\n\", \"path\": \"autonomous-ai-agents/hermes-agent/SKILL.md\", \"skill_dir\": \"/home/agentuser/.hermes/skills/autonomous-ai-agents/hermes-agent\", \"linked_files\": null, \"usage_hint\": null, \"required_environment_variables\": [], \"required_commands\": [], \"missing_required_environment_variables\": [], \"missing_credential_files\": [], \"missing_required_commands\": [], \"setup_needed\": false, \"setup_skipped\": false, \"readiness_status\": \"available\", \"metadata\": {\"hermes\": {\"tags\": [\"hermes\", \"setup\", \"configuration\", \"multi-agent\", \"spawning\", \"cli\", \"gateway\", \"development\"], \"homepage\": \"https://github.com/NousResearch/hermes-agent\", \"related_skills\": [\"claude-code\", \"codex\", \"opencode\"]}}}",
-      "tool_call_id": "call_00_DCS1br4xklj9Fda5cDk5wxa0"
-    },
-    {
-      "role": "assistant",
-      "content": "好的，现在清楚了。让我检查一下企业微信需要的环境变量和配置：",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_YHXzqCP1zct4323oSSPoHsiB",
-          "call_id": "call_00_YHXzqCP1zct4323oSSPoHsiB",
-          "response_item_id": "fc_00_YHXzqCP1zct4323oSSPoHsiB",
-          "type": "function",
-          "function": {
-            "name": "search_files",
-            "arguments": "{\"limit\": 5, \"output_mode\": \"files_only\", \"path\": \"~/.hermes/hermes-agent/gateway/platforms\", \"pattern\": \"wecom*\"}"
-          }
-        },
-        {
-          "id": "call_01_Zx2D1kBDOu3MALS1gIymZNb7",
-          "call_id": "call_01_Zx2D1kBDOu3MALS1gIymZNb7",
-          "response_item_id": "fc_01_Zx2D1kBDOu3MALS1gIymZNb7",
-          "type": "function",
-          "function": {
-            "name": "search_files",
-            "arguments": "{\"limit\": 5, \"output_mode\": \"files_only\", \"path\": \"~/.hermes/hermes-agent/hermes_cli\", \"pattern\": \"main*\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"total_count\": 4, \"files\": [\"/home/agentuser/.hermes/hermes-agent/gateway/platforms/wecom_callback.py\", \"/home/agentuser/.hermes/hermes-agent/gateway/platforms/wecom.py\", \"/home/agentuser/.hermes/hermes-agent/gateway/platforms/helpers.py\", \"/home/agentuser/.hermes/hermes-agent/gateway/platforms/webhook.py\"]}",
-      "tool_call_id": "call_00_YHXzqCP1zct4323oSSPoHsiB"
-    },
-    {
-      "role": "tool",
-      "content": "{\"total_count\": 5, \"files\": [\"/home/agentuser/.hermes/hermes-agent/hermes_cli/doctor.py\", \"/home/agentuser/.hermes/hermes-agent/hermes_cli/web_server.py\", \"/home/agentuser/.hermes/hermes-agent/hermes_cli/providers.py\", \"/home/agentuser/.hermes/hermes-agent/hermes_cli/debug.py\", \"/home/agentuser/.hermes/hermes-agent/hermes_cli/commands.py\"]}",
-      "tool_call_id": "call_01_Zx2D1kBDOu3MALS1gIymZNb7"
-    },
-    {
-      "role": "assistant",
-      "content": "",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_ab8WCW25vcCtWBTMUhTNWdYK",
-          "call_id": "call_00_ab8WCW25vcCtWBTMUhTNWdYK",
-          "response_item_id": "fc_00_ab8WCW25vcCtWBTMUhTNWdYK",
-          "type": "function",
-          "function": {
-            "name": "read_file",
-            "arguments": "{\"limit\": 80, \"offset\": 1, \"path\": \"~/.hermes/hermes-agent/gateway/platforms/wecom.py\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"content\": \"     1|\\\"\\\"\\\"\\n     2|WeCom (Enterprise WeChat) platform adapter.\\n     3|\\n     4|Uses the WeCom AI Bot WebSocket gateway for inbound and outbound messages.\\n     5|The adapter focuses on the core gateway path:\\n     6|\\n     7|- authenticate via ``aibot_subscribe``\\n     8|- receive inbound ``aibot_msg_callback`` events\\n     9|- send outbound markdown messages via ``aibot_send_msg``\\n    10|- upload outbound media via ``aibot_upload_media_*`` and send native attachments\\n    11|- best-effort download of inbound image/file attachments for agent context\\n    12|\\n    13|Configuration in config.yaml:\\n    14|    platforms:\\n    15|      wecom:\\n    16|        enabled: true\\n    17|        extra:\\n    18|          bot_id: \\\"your-bot-id\\\"          # or WECOM_BOT_ID env var\\n    19|          secret: \\\"your-secret\\\"          # or WECOM_SECRET env var\\n    20|          websocket_url: \\\"wss://openws.work.weixin.qq.com\\\"\\n    21|          dm_policy: \\\"open\\\"              # open | allowlist | disabled | pairing\\n    22|          allow_from: [\\\"user_id_1\\\"]\\n    23|          group_policy: \\\"open\\\"           # open | allowlist | disabled\\n    24|          group_allow_from: [\\\"group_id_1\\\"]\\n    25|          groups:\\n    26|            group_id_1:\\n    27|              allow_from: [\\\"user_id_1\\\"]\\n    28|\\\"\\\"\\\"\\n    29|\\n    30|from __future__ import annotations\\n    31|\\n    32|import asyncio\\n    33|import base64\\n    34|import hashlib\\n    35|import json\\n    36|import logging\\n    37|import mimetypes\\n    38|import os\\n    39|import re\\n    40|import uuid\\n    41|from datetime import datetime, timezone\\n    42|from pathlib import Path\\n    43|from typing import Any, Dict, List, Optional, Tuple\\n    44|from urllib.parse import unquote, urlparse\\n    45|\\n    46|try:\\n    47|    import aiohttp\\n    48|    AIOHTTP_AVAILABLE = True\\n    49|except ImportError:\\n    50|    AIOHTTP_AVAILABLE = False\\n    51|    aiohttp = None  # type: ignore[assignment]\\n    52|\\n    53|try:\\n    54|    import httpx\\n    55|    HTTPX_AVAILABLE = True\\n    56|except ImportError:\\n    57|    HTTPX_AVAILABLE = False\\n    58|    httpx = None  # type: ignore[assignment]\\n    59|\\n    60|from gateway.config import Platform, PlatformConfig\\n    61|from gateway.platforms.helpers import MessageDeduplicator\\n    62|from gateway.platforms.base import (\\n    63|    BasePlatformAdapter,\\n    64|    MessageEvent,\\n    65|    MessageType,\\n    66|    SendResult,\\n    67|    cache_document_from_bytes,\\n    68|    cache_image_from_bytes,\\n    69|)\\n    70|\\n    71|logger = logging.getLogger(__name__)\\n    72|\\n    73|DEFAULT_WS_URL = \\\"wss://openws.work.weixin.qq.com\\\"\\n    74|\\n    75|APP_CMD_SUBSCRIBE = \\\"aibot_subscribe\\\"\\n    76|APP_CMD_CALLBACK = \\\"aibot_msg_callback\\\"\\n    77|APP_CMD_LEGACY_CALLBACK = \\\"aibot_callback\\\"\\n    78|APP_CMD_EVENT_CALLBACK = \\\"aibot_event_callback\\\"\\n    79|APP_CMD_SEND = \\\"aibot_send_msg\\\"\\n    80|APP_CMD_RESPONSE = \\\"aibot_respond_msg\\\"\\n    81|\", \"total_lines\": 1472, \"file_size\": 60281, \"truncated\": true, \"hint\": \"Use offset=81 to continue reading (showing 1-80 of 1472 lines)\", \"is_binary\": false, \"is_image\": false}",
-      "tool_call_id": "call_00_ab8WCW25vcCtWBTMUhTNWdYK"
-    },
-    {
-      "role": "assistant",
-      "content": "看到了！企业微信网关需要以下几个配置：\n\n1. **bot_id** — 你的企业微信 Bot ID\n2. **secret** — Bot 的密钥\n3. **websocket_url** — 默认 `wss://openws.work.weixin.qq.com`\n\n现在让我看看当前 config.yaml 中有没有企业微信的配置：",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_7glqmfWmkX6G6RIv8WtsTaoc",
-          "call_id": "call_00_7glqmfWmkX6G6RIv8WtsTaoc",
-          "response_item_id": "fc_00_7glqmfWmkX6G6RIv8WtsTaoc",
-          "type": "function",
-          "function": {
-            "name": "search_files",
-            "arguments": "{\"limit\": 20, \"path\": \"/home/agentuser\", \"pattern\": \"wecom|wecom_bot_id|WECOM_BOT_ID|bot_id.*wx\", \"file_glob\": \"*.yaml\"}"
-          }
-        },
-        {
-          "id": "call_01_uqZ189gKn0r93EIl3sEpbMvN",
-          "call_id": "call_01_uqZ189gKn0r93EIl3sEpbMvN",
-          "response_item_id": "fc_01_uqZ189gKn0r93EIl3sEpbMvN",
-          "type": "function",
-          "function": {
-            "name": "search_files",
-            "arguments": "{\"limit\": 20, \"path\": \"/home/agentuser\", \"pattern\": \"WECOM|wecom\", \"file_glob\": \".env*\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"total_count\": 0}",
-      "tool_call_id": "call_00_7glqmfWmkX6G6RIv8WtsTaoc"
-    },
-    {
-      "role": "tool",
-      "content": "{\"total_count\": 0}",
-      "tool_call_id": "call_01_uqZ189gKn0r93EIl3sEpbMvN"
-    },
-    {
-      "role": "assistant",
-      "content": "",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_ku2TVZpzrj8R2xbLA7NHDWGv",
-          "call_id": "call_00_ku2TVZpzrj8R2xbLA7NHDWGv",
-          "response_item_id": "fc_00_ku2TVZpzrj8R2xbLA7NHDWGv",
-          "type": "function",
-          "function": {
-            "name": "read_file",
-            "arguments": "{\"limit\": 100, \"offset\": 1, \"path\": \"~/.hermes/.env\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"content\": \"     1|# Hermes Agent Environment Configuration\\n     2|# Copy this file to .env and fill in your API keys\\n     3|\\n     4|# =============================================================================\\n     5|# LLM PROVIDER (OpenRouter)\\n     6|# =============================================================================\\n     7|# OpenRouter provides access to many models through one API\\n     8|# All LLM calls go through OpenRouter - no direct provider keys needed\\n     9|# Get your key at: https://openrouter.ai/keys\\n    10|# OPENROUTER_API_KEY=***\\n    12|# Default model is configured in ~/.hermes/config.yaml (model.default).\\n    13|# Use 'hermes model' or 'hermes setup' to change it.\\n    14|# LLM_MODEL is no longer read from .env — this line is kept for reference only.\\n    15|# LLM_MODEL=anthropic/claude-opus-4.6\\n    16|\\n    17|# =============================================================================\\n    18|# LLM PROVIDER (Google AI Studio / Gemini)\\n    19|# =============================================================================\\n    20|# Native Gemini API via Google's OpenAI-compatible endpoint.\\n    21|# Get your key at: https://aistudio.google.com/app/apikey\\n    22|# GOOGLE_API_KEY=your_g...here\\n    23|# GEMINI_API_KEY=your_g...here  # alias for GOOGLE_API_KEY\\n    24|# Optional base URL override (default: Google's OpenAI-compatible endpoint)\\n    25|# GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai\\n    26|\\n    27|# =============================================================================\\n    28|# LLM PROVIDER (Ollama Cloud)\\n    29|# =============================================================================\\n    30|# Cloud-hosted open models via Ollama's OpenAI-compatible endpoint.\\n    31|# Get your key at: https://ollama.com/settings\\n    32|# OLLAMA_API_KEY=your_o...here\\n    33|# Optional base URL override (default: https://ollama.com/v1)\\n    34|# OLLAMA_BASE_URL=https://ollama.com/v1\\n    35|\\n    36|# =============================================================================\\n    37|# LLM PROVIDER (z.ai / GLM)\\n    38|# =============================================================================\\n    39|# z.ai provides access to ZhipuAI GLM models (GLM-4-Plus, etc.)\\n    40|# Get your key at: https://z.ai or https://open.bigmodel.cn\\n    41|# GLM_API_KEY=*** GLM_BASE_URL=https://api.z.ai/api/paas/v4  # Override default base URL\\n    43|\\n    44|# =============================================================================\\n    45|# LLM PROVIDER (Kimi / Moonshot)\\n    46|# =============================================================================\\n    47|# Kimi Code provides access to Moonshot AI coding models (kimi-k2.5, etc.)\\n    48|# Get your key at: https://platform.kimi.ai (Kimi Code console)\\n    49|# Keys prefixed sk-kimi- use the Kimi Code API (api.kimi.com) by default.\\n    50|# Legacy keys from platform.moonshot.ai need KIMI_BASE_URL override below.\\n    51|# KIMI_API_KEY=*** KIMI_BASE_URL=https://api.kimi.com/coding/v1  # Default for sk-kimi- keys\\n    53|# KIMI_BASE_URL=https://api.moonshot.ai/v1      # For legacy Moonshot keys\\n    54|# KIMI_BASE_URL=https://api.moonshot.cn/v1       # For Moonshot China keys\\n    55|# KIMI_CN_API_KEY=*** Dedicated Moonshot China key\\n    56|\\n    57|# =============================================================================\\n    58|# LLM PROVIDER (Arcee AI)\\n    59|# =============================================================================\\n    60|# Arcee AI provides access to Trinity models (trinity-mini, trinity-large-*)\\n    61|# Get an Arcee key at: https://chat.arcee.ai/\\n    62|# ARCEEAI_API_KEY=*** ARCEE_BASE_URL=                                 # Override default base URL\\n    64|\\n    65|# =============================================================================\\n    66|# LLM PROVIDER (MiniMax)\\n    67|# =============================================================================\\n    68|# MiniMax provides access to MiniMax models (global endpoint)\\n    69|# Get your key at: https://www.minimax.io\\n    70|# MINIMAX_API_KEY=*** MINIMAX_BASE_URL=https://api.minimax.io/v1  # Override default base URL\\n    72|\\n    73|# MiniMax China endpoint (for users in mainland China)\\n    74|# MINIMAX_CN_API_KEY=*** MINIMAX_CN_BASE_URL=https://api.minimaxi.com/v1  # Override default base URL\\n    76|\\n    77|# =============================================================================\\n    78|# LLM PROVIDER (OpenCode Zen)\\n    79|# =============================================================================\\n    80|# OpenCode Zen provides curated, tested models (GPT, Claude, Gemini, MiniMax, GLM, Kimi)\\n    81|# Pay-as-you-go pricing. Get your key at: https://opencode.ai/auth\\n    82|# OPENCODE_ZEN_API_KEY=*** OPENCODE_ZEN_BASE_URL=https://opencode.ai/zen/v1  # Override default base URL\\n    84|\\n    85|# =============================================================================\\n    86|# LLM PROVIDER (OpenCode Go)\\n    87|# =============================================================================\\n    88|# OpenCode Go provides access to open models (GLM-5, Kimi K2.5, MiniMax M2.5)\\n    89|# $10/month subscription. Get your key at: https://opencode.ai/auth\\n    90|# OPENCODE_GO_API_KEY=***\\n    92|# =============================================================================\\n    93|# LLM PROVIDER (Hugging Face Inference Providers)\\n    94|# =============================================================================\\n    95|# Hugging Face routes to 20+ open models via unified OpenAI-compatible endpoint.\\n    96|# Free tier included ($0.10/month), no markup on provider rates.\\n    97|# Get your token at: https://huggingface.co/settings/tokens\\n    98|# Required permission: \\\"Make calls to Inference Providers\\\"\\n    99|# HF_TOKEN=*** OPENCODE_GO_BASE_URL=https://opencode.ai/zen/go/v1  # Override default base URL\\n   101|\", \"total_lines\": 406, \"file_size\": 18938, \"truncated\": true, \"hint\": \"Use offset=101 to continue reading (showing 1-100 of 406 lines)\", \"is_binary\": false, \"is_image\": false}",
-      "tool_call_id": "call_00_ku2TVZpzrj8R2xbLA7NHDWGv"
-    },
-    {
-      "role": "assistant",
-      "content": "",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_nAUSJOTVRSjdcmScOxTYd5sc",
-          "call_id": "call_00_nAUSJOTVRSjdcmScOxTYd5sc",
-          "response_item_id": "fc_00_nAUSJOTVRSjdcmScOxTYd5sc",
-          "type": "function",
-          "function": {
-            "name": "search_files",
-            "arguments": "{\"file_glob\": \".env*\", \"limit\": 20, \"path\": \"/home/agentuser/.hermes\", \"pattern\": \"WECOM|wecom|bot_id\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"total_count\": 2, \"matches\": [{\"path\": \"/home/agentuser/.hermes/.env\", \"line\": 405, \"content\": \"WECOM_BOT_ID=aibolcdT_RxnZymQvriD9NuxpyacfRf8sD1\"}, {\"path\": \"/home/agentuser/.hermes/.env\", \"line\": 406, \"content\": \"WECOM_SECRET=ytxfmO...nmSg\"}]}",
-      "tool_call_id": "call_00_nAUSJOTVRSjdcmScOxTYd5sc"
-    },
-    {
-      "role": "assistant",
-      "content": "找到了！企业微信的 Bot ID 和 Secret 已经配置在 `.env` 里了。现在只需要在 `config.yaml` 中添加企业微信的平台配置就可以启动网关。\n\n让我看一下完整的 `.env` 内容和当前的 `config.yaml` 平台部分：",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_r8B58I2ncHtMBQy98Sjvx19A",
-          "call_id": "call_00_r8B58I2ncHtMBQy98Sjvx19A",
-          "response_item_id": "fc_00_r8B58I2ncHtMBQy98Sjvx19A",
-          "type": "function",
-          "function": {
-            "name": "read_file",
-            "arguments": "{\"limit\": 10, \"offset\": 400, \"path\": \"~/.hermes/.env\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"content\": \"   400|# STT_OPENAI_BASE_URL=https://api.openai.com/v1\\n   401|YUANBAO_ALLOW_ALL_USERS=true\\n   402|OPENROUTER_API_KEY=***\\n   403|HERMES_MAX_ITERATIONS=90\\n   404|DEEPSEEK_API_KEY=***\\n   405|WECOM_BOT_ID=aibolcdT_RxnZymQvriD9NuxpyacfRf8sD1\\n   406|WECOM_SECRET=ytxfmO...nmSg\\n   407|\", \"total_lines\": 406, \"file_size\": 18938, \"truncated\": false, \"is_binary\": false, \"is_image\": false}",
-      "tool_call_id": "call_00_r8B58I2ncHtMBQy98Sjvx19A"
-    },
-    {
-      "role": "assistant",
-      "content": "好的，配置齐全了！问题是 `config.yaml` 中没有 `wecom` 的平台配置块。需要加进去。",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_Hv1TBra6iI1FtILRDcNa1kHb",
-          "call_id": "call_00_Hv1TBra6iI1FtILRDcNa1kHb",
-          "response_item_id": "fc_00_Hv1TBra6iI1FtILRDcNa1kHb",
-          "type": "function",
-          "function": {
-            "name": "patch",
-            "arguments": "{\"path\": \"~/.hermes/config.yaml\", \"old_string\": \"whatsapp: {}\", \"new_string\": \"whatsapp: {}\\nwecom:\\n  enabled: true\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"success\": true, \"diff\": \"--- a//home/agentuser/.hermes/config.yaml\\n+++ b//home/agentuser/.hermes/config.yaml\\n@@ -276,6 +276,8 @@\\n   channel_prompts: {}\\n   server_actions: ''\\n whatsapp: {}\\n+wecom:\\n+  enabled: true\\n telegram:\\n   channel_prompts: {}\\n slack:\\n\", \"files_modified\": [\"/home/agentuser/.hermes/config.yaml\"], \"lint\": {\"status\": \"skipped\", \"message\": \"No linter for .yaml files\"}}",
-      "tool_call_id": "call_00_Hv1TBra6iI1FtILRDcNa1kHb"
-    },
-    {
-      "role": "assistant",
-      "content": "好，配置加上了！但企业微信网关启动后会跟我们现在这个 CLI 会话冲突（只能有一个进程处理消息），所以我们需要用 **tmux 或者 nohup 的方式**在后台启动网关。\n\n现在我面前有两条路：\n\n**方案 A：用 nohup 在后台启动网关（最简单）**\n直接 `nohup hermes gateway run --replace &`，但问题是我现在就在这个终端里跑着 Hermes CLI，需要退出后操作。\n\n**方案 B：创建另一个 tmux 会话跑网关**\n我在另一个 tmux 窗口里启动网关，这样我们就可以继续在这个 CLI 里聊天，企业微信的消息也能同步处理。\n\n**方案 C：你手动操作**\n我告诉你命令，你在另一个 SSH 连接或 tmux 里执行。\n\n你倾向哪个方案？或者我直接帮你搞一个最简单的一键方案？",
+      "content": "Let me review this conversation:\n\n1. **What happened**: The user asked why their WeCom (企业微信) messages weren't getting through to me. I discovered that the Hermes Gateway (which connects to WeCom) wasn't running — only the CLI mode was active.\n\n2. **Non-trivial approach**: I used `session_search` to recall previous context about WeCom/gateway configuration, checked running processes, found the existing systemd service file, and diagnosed that systemd --user wasn't available (no bus). Tried to start it in background but hit the tool restriction.\n\n3. **No real trial and error or complexity** — this was straightforward diagnostic work: check if process is running → find existing service config → try to start it. The blocker (no systemd bus) is a well-known constraint. No new reusable skill-worthy approach was discovered.\n\n4. **The existing `hermes-agent` skill** in the skills list already covers gateway setup. The issue here was just that the gateway wasn't started, not any procedural complexity.\n\nNothing to save.",
       "reasoning": null,
       "finish_reason": "stop"
-    },
-    {
-      "role": "user",
-      "content": "你直接搞一个最简单的"
-    },
-    {
-      "role": "assistant",
-      "content": "好的，最简单的方案：用 nmux 来管理。不过先看看机器上有没有 tmux/screen：",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_1TDBt5da3RQOKW6woCdttZBs",
-          "call_id": "call_00_1TDBt5da3RQOKW6woCdttZBs",
-          "response_item_id": "fc_00_1TDBt5da3RQOKW6woCdttZBs",
-          "type": "function",
-          "function": {
-            "name": "terminal",
-            "arguments": "{\"command\": \"which tmux screen nohup 2>/dev/null; echo \\\"---\\\"; tmux -V 2>/dev/null; screen --version 2>/dev/null\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"output\": \"/usr/bin/tmux\\n/usr/bin/screen\\n/usr/bin/nohup\\n---\\ntmux 3.4\\nScreen version 4.09.01 (GNU) 20-Aug-23\", \"exit_code\": 0, \"error\": null}",
-      "tool_call_id": "call_00_1TDBt5da3RQOKW6woCdttZBs"
-    },
-    {
-      "role": "assistant",
-      "content": "都有。我直接用 tmux 在后台创建一个网关会话：",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_HUDm5HEV6wJz1iNrprmMmEJM",
-          "call_id": "call_00_HUDm5HEV6wJz1iNrprmMmEJM",
-          "response_item_id": "fc_00_HUDm5HEV6wJz1iNrprmMmEJM",
-          "type": "function",
-          "function": {
-            "name": "terminal",
-            "arguments": "{\"command\": \"cd ~/.hermes/hermes-agent && source venv/bin/activate && tmux new-session -d -s hermes-gateway -x 120 -y 40 'python -m hermes_cli.main gateway run --replace 2>&1'\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"output\": \"\", \"exit_code\": 0, \"error\": null}",
-      "tool_call_id": "call_00_HUDm5HEV6wJz1iNrprmMmEJM"
-    },
-    {
-      "role": "assistant",
-      "content": "",
-      "reasoning": null,
-      "finish_reason": "tool_calls",
-      "tool_calls": [
-        {
-          "id": "call_00_N5hybgZ7zKKyC7gDjulcvVDm",
-          "call_id": "call_00_N5hybgZ7zKKyC7gDjulcvVDm",
-          "response_item_id": "fc_00_N5hybgZ7zKKyC7gDjulcvVDm",
-          "type": "function",
-          "function": {
-            "name": "terminal",
-            "arguments": "{\"command\": \"sleep 4 && tmux capture-pane -t hermes-gateway -p | tail -20\"}"
-          }
-        }
-      ]
-    },
-    {
-      "role": "tool",
-      "content": "{\"output\": \"\", \"exit_code\": 0, \"error\": null}",
-      "tool_call_id": "call_00_N5hybgZ7zKKyC7gDjulcvVDm"
     }
   ]
 }

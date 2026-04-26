@@ -276,6 +276,8 @@ discord:
   channel_prompts: {}
   server_actions: ''
 whatsapp: {}
+wecom:
+  enabled: true
 telegram:
   channel_prompts: {}
 slack:
