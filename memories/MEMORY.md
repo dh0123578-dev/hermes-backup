@@ -7,3 +7,5 @@
 企业微信网关启动方式：用 `python -m hermes_cli.main gateway run` 在后台启动（通过 terminal background=true）。网关状态文件在 `~/.hermes/gateway_state.json`，可以查看 wecom 连接状态。当前网关 PID 309434，wecom 已 connected。
 §
 用户 HanXianBiao 询问为什么清空了之前的对话记录。需要解释这是正常的会话隔离机制——每个新对话独立，避免上下文混杂。持久记忆功能保留重要信息，之前的会话内容可以通过 session_search 检索。
+§
+Vision 模型已配置为智谱 GLM-4V-Flash（免费，国内可访问），provider=custom，保存在 config.yaml 中。
