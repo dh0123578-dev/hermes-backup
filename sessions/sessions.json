@@ -1,9 +1,9 @@
 {
   "agent:main:wecom:dm:HanXianBiao": {
     "session_key": "agent:main:wecom:dm:HanXianBiao",
-    "session_id": "20260501_164537_6b2648fa",
-    "created_at": "2026-05-01T16:45:37.784983",
-    "updated_at": "2026-05-01T16:51:00.688097",
+    "session_id": "20260501_235341_ba6b26d7",
+    "created_at": "2026-05-01T23:53:41.024446",
+    "updated_at": "2026-05-01T23:55:22.832142",
     "display_name": null,
     "platform": "wecom",
     "chat_type": "dm",
@@ -12,7 +12,7 @@
     "cache_read_tokens": 0,
     "cache_write_tokens": 0,
     "total_tokens": 0,
-    "last_prompt_tokens": 24390,
+    "last_prompt_tokens": 13542,
     "estimated_cost_usd": 0.0,
     "cost_status": "unknown",
     "memory_flushed": false,

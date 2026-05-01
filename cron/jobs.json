@@ -25,7 +25,7 @@
       "paused_at": null,
       "paused_reason": null,
       "created_at": "2026-04-28T14:56:16.245699+08:00",
-      "next_run_at": "2026-05-01T17:14:30.287429+08:00",
+      "next_run_at": "2026-05-02T00:10:09.788839+08:00",
       "last_run_at": "2026-04-30T07:17:47.461863+08:00",
       "last_status": "ok",
       "last_error": null,
@@ -96,7 +96,7 @@
       "paused_at": null,
       "paused_reason": null,
       "created_at": "2026-04-29T07:30:25.726011+08:00",
-      "next_run_at": "2026-05-01T20:00:00+08:00",
+      "next_run_at": "2026-05-02T20:00:00+08:00",
       "last_run_at": "2026-04-29T20:00:56.639800+08:00",
       "last_status": "ok",
       "last_error": null,
@@ -110,5 +110,5 @@
       }
     }
   ],
-  "updated_at": "2026-05-01T16:44:30.289540+08:00"
+  "updated_at": "2026-05-01T23:40:09.790422+08:00"
 }
