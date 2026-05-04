@@ -3,7 +3,7 @@ agent:
   gateway_notify_interval: 600
   gateway_timeout: 1800
   gateway_timeout_warning: 900
-  max_turns: 90
+  max_turns: 50
   personalities:
     catgirl: You are Neko-chan, an anime catgirl AI assistant, nya~! Add 'nya' and
       cat-like expressions to your speech. Use kaomoji like (=^･ω･^=) and ฅ^•ﻌ•^ฅ.
@@ -41,7 +41,7 @@ agent:
     uwu: hewwo! i'm your fwiendwy assistant uwu~ i wiww twy my best to hewp you! *nuzzles
       your code* OwO what's this? wet me take a wook! i pwomise to be vewy hewpful
       >w<
-  reasoning_effort: medium
+  reasoning_effort: low
   restart_drain_timeout: 60
   service_tier: ''
   tool_use_enforcement: auto
@@ -146,8 +146,8 @@ command_allowlist: []
 compression:
   enabled: true
   protect_last_n: 20
-  target_ratio: 0.2
-  threshold: 0.5
+  target_ratio: 0.15
+  threshold: 0.4
 context:
   engine: compressor
 credential_pool_strategies: {}
@@ -190,7 +190,7 @@ display:
   show_reasoning: false
   skin: default
   streaming: true
-  tool_preview_length: 0
+  tool_preview_length: 200
   tool_progress: all
   tool_progress_command: false
   tool_progress_overrides: {}
@@ -213,11 +213,11 @@ mattermost:
   channel_prompts: {}
 memory:
   flush_min_turns: 6
-  memory_char_limit: 2200
+  memory_char_limit: 600
   memory_enabled: true
   nudge_interval: 10
   provider: ''
-  user_char_limit: 1375
+  user_char_limit: 400
   user_profile_enabled: true
 model:
   base_url: https://api.deepseek.com/v1
