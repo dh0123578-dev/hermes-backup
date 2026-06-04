@@ -51,7 +51,7 @@
       "schedule_display": "0 8 * * *",
       "repeat": {
         "times": null,
-        "completed": 34
+        "completed": 35
       },
       "enabled": true,
       "state": "scheduled",
@@ -59,10 +59,10 @@
       "paused_reason": null,
       "created_at": "2026-04-29T07:30:24.721796+08:00",
       "next_run_at": "2026-06-05T08:00:00+08:00",
-      "last_run_at": "2026-06-03T08:01:07.420045+08:00",
+      "last_run_at": "2026-06-04T08:00:31.374442+08:00",
       "last_status": "ok",
       "last_error": null,
-      "last_delivery_error": null,
+      "last_delivery_error": "delivery error: WeCom: failed to connect - WeCom startup failed: ",
       "deliver": "origin",
       "origin": {
         "platform": "wecom",
@@ -110,5 +110,5 @@
       }
     }
   ],
-  "updated_at": "2026-06-04T08:00:00.034677+08:00"
+  "updated_at": "2026-06-04T08:00:31.374815+08:00"
 }
